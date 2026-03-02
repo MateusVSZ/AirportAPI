@@ -1,6 +1,7 @@
 package br.eti.kge.airports.controllers;
 
 import br.eti.kge.airports.dto.AirportMinDTO;
+import br.eti.kge.airports.dto.AirportNearMeDTO;
 import br.eti.kge.airports.entities.Airport;
 import br.eti.kge.airports.service.AirportService;
 import java.util.List;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -91,10 +93,45 @@ public class AirportController {
           
           return ResponseEntity.ok(result);   
          }
+                /**
+                 * Endpoint /airports/nearme
+                 * Retorna os aeroportos próximos a coodernada enviada como parâmetro
+                 * da requição GET
+                 * 
+                 * @param latitude
+                 * @param longitude
+                 * @return
+                 * 
+                 */
+        }
+                @GetMapping("/nearme")
+                public ResponseEntity<List<AirportNearMeDTO>> findNearMe(
+                
+                @RequestParam double latitude,
+                @RequestParam double longitude){
+                List<AirportNearMeDTO> result = airportService.findNearMe(latitude, longitude);
+            
+                 if(result.isEmpty()){
+                 //Ops...lista vazia
+                 // notFound devolve 404
+                 return ResponseEntity.notFound().build();
+            
+                 }else{
+                //Eba! Tem dado!
+                // ok devolve 200
+          
+                return ResponseEntity.ok(result);   
+             }
                 
                 
+        
+        }
                 
-    }
+        
+        }
 
-}
+                
+    
+
+
 
