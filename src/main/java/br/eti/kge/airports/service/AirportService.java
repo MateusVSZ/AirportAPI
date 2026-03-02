@@ -4,6 +4,7 @@
  */
 package br.eti.kge.airports.service;
 
+import br.eti.kge.airports.dto.AirportMinDTO;
 import br.eti.kge.airports.entities.Airport;
 import br.eti.kge.airports.repositories.AirportRepository;
 import java.util.List;
@@ -32,8 +33,6 @@ public class AirportService {
         que é os dados encapsulados apenas transfere
         e encapsul. O findAll() "encontra todos" busca tudo da base de dados o List<Airport>*/
         
-    
-
     }
     
     /**
@@ -47,7 +46,16 @@ public class AirportService {
     
      
     
-    
+}
+    public List<AirportMinDTO> findByContry(String country){
+        List<Airport> resultAirport = airportRepository.findByCountryIgnoreCase(country);
+        
+        List<AirportMinDTO> resultDTO = resultAirport.stream()
+               .map(x -> new AirportMinDTO(x)).toList();
+        
+        return resultDTO;
+        
+
     
     }   
 }

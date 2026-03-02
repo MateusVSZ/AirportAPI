@@ -1,5 +1,6 @@
 package br.eti.kge.airports.controllers;
 
+import br.eti.kge.airports.dto.AirportMinDTO;
 import br.eti.kge.airports.entities.Airport;
 import br.eti.kge.airports.service.AirportService;
 import java.util.List;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class AirportController {
-    
+
     @Autowired
     private AirportService airportService;
 
@@ -34,6 +35,7 @@ public class AirportController {
 
     /**
      * Mapeia endpoint /city/{cityname}
+     *
      * @param cityName - Nome da cidade para ser filtrada.
      * @return List<Airport>
      */
@@ -53,4 +55,23 @@ public class AirportController {
 
         }
     }
+
+    @GetMapping("/country/{countryName}")
+    public ResponseEntity<List<AirportMinDTO>> findByCountryIgnoreCase(@PathVariable String countryName) {
+        
+        List<AirportMinDTO> result = airportService.findByContry(countryName);
+
+        if (result.isEmpty()) {
+            //Ops..ListaVazia....
+            //NotFound devolve 404
+            return ResponseEntity.notFound().build();
+
+        } else {
+            //eba! tem dados!
+            //ok devolve 200    
+            return ResponseEntity.ok(result);
+
+        }
+    }
+
 }
